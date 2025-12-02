@@ -1,37 +1,66 @@
-# Node.js modules
+# Dependencies
 node_modules/
 
-# Build artifacts
-dist/
+# Production
 build/
-.wxt/
+dist/
+out/
 
-# Log files
+# Logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Editor/IDE specific files
+# Build artifacts
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional vscode cache
 .vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Vite / Rollup specific
+*.local
+
+# Browser extension development
+*.crx
+*.xpi
+
+# Test runners
+coverage/
+.nyc_output/
+
+# Secrets (should not be committed)
+.env
+.env.*
+!
+.env.example
+
+# Editor directories and files
 .idea/
-*.sublime-project
+.project
+.settings/
 *.sublime-workspace
 
-# OS specific files
+# macOS
 .DS_Store
-thumbs.db
-
-# NPM cache
-.npm/
-
-# Test results
-coverage/
-.vitest/
-
-# Temporary files
-*.tmp
-*~
