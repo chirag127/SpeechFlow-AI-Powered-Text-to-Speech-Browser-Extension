@@ -1,33 +1,51 @@
-# Security Policy for SpeechFlow-AI-Powered-Text-to-Speech-Browser-Extension
+# Security Policy for SpeechFlow-AI-Natural-Speech-Browser-Extension
 
-## Vulnerability Reporting
+As an Apex-mandated project, `SpeechFlow-AI-Natural-Speech-Browser-Extension` adheres to Zero-Defect principles, prioritizing security throughout the development lifecycle. This policy outlines the process for responsibly disclosing security vulnerabilities.
 
-We take the security of our project very seriously. If you discover any security vulnerabilities within SpeechFlow-AI-Powered-Text-to-Speech-Browser-Extension, please report them responsibly.
+## 🛡️ Commitment to Security
 
-**Please do NOT file a public issue or pull request** for security vulnerabilities. Instead, you can report them privately to the maintainer by sending an email to `chirag127@users.noreply.github.com`.
+We treat security as a paramount concern. All development follows the **Apex Technical Authority Directives** (referenced in `AGENTS.md`), emphasizing secure-by-default configurations, robust input validation, and adherence to the latest WebExtension security best practices (e.g., Content Security Policy (CSP) hardening, principle of least privilege for background scripts).
 
-## Reporting Procedure
+## 🚨 Supported Versions
 
-When reporting a security issue, please provide the following information:
+We actively support and backport security fixes to the primary maintained version, which corresponds to the latest stable release on the `main` branch.
 
-1.  **A clear and concise description of the vulnerability.**
-2.  **The affected version(s) of the software.**
-3.  **The steps to reproduce the vulnerability.** Include any relevant code snippets or examples.
-4.  **The potential impact of the vulnerability.**
-5.  **Any recommendations for mitigation or remediation.**
+| Version | Status | Branch |
+| :--- | :--- | :--- |
+| Latest Stable | Supported | `main` |
+| Previous Major | Maintenance Mode | `release/*` |
 
-## Timeline
+## 🔍 Reporting a Vulnerability
 
-We aim to acknowledge all security vulnerability reports within **48 hours** and will work to address them as quickly as possible. The exact timeline for a fix will depend on the complexity of the vulnerability.
+If you discover a security vulnerability in this repository, please follow these steps to ensure responsible disclosure:
 
-## Disclosure Policy
+1.  **Do Not** create a public issue or pull request detailing the vulnerability.
+2.  **Contact Us Privately:** Send an email to the designated security contact immediately.
 
-We will not disclose your report to the public until the vulnerability has been fixed. We may also choose to publicly disclose the vulnerability after it has been resolved, providing appropriate credit to the reporter.
+**Security Contact Email:** `security@chirag127.dev` (Placeholder for high-priority security communications).
 
-## Supported Versions
+### Required Information in Disclosure
 
-At this time, only the latest stable version of `SpeechFlow-AI-Powered-Text-to-Speech-Browser-Extension` is actively maintained and supported. Security vulnerabilities in older versions may not be addressed.
+When reporting, please include the following details to expedite our investigation:
 
-## Thank You
+*   **Product:** `SpeechFlow-AI-Natural-Speech-Browser-Extension`
+*   **Repository URL:** `https://github.com/chirag127/SpeechFlow-AI-Natural-Speech-Browser-Extension`
+*   **Vulnerability Type:** (e.g., XSS, CSP bypass, data leakage, logic flaw).
+*   **Steps to Reproduce:** Clear, step-by-step instructions to replicate the issue, including browser version and extension state.
+*   **Impact:** A description of the potential harm if exploited.
 
-We appreciate your efforts in responsibly disclosing your findings to help us improve the security of SpeechFlow-AI-Powered-Text-to-Speech-Browser-Extension.
+## 🛠️ Remediation and Disclosure Timeline
+
+Upon receiving a valid vulnerability report, we commit to the following timeline:
+
+1.  **Acknowledgment (T+24 Hours):** We will confirm receipt of your report.
+2.  **Triage & Fix Development (Variable):** Our team will immediately begin triage and work to develop a patch based on severity.
+3.  **Coordinated Disclosure:** We will not publicly disclose the vulnerability until a patch has been released or **90 days** have passed since initial notification (whichever comes first), unless otherwise agreed upon with the reporter.
+
+## ⚙️ Development & Testing Security Measures
+
+This project employs automated security checks as defined in our CI/CD pipeline (`.github/workflows/ci.yml`):
+
+*   **Static Analysis:** Linting with **Biome** ensures adherence to modern, secure TypeScript coding patterns.
+*   **Dependency Scanning:** Regular checks are performed during the CI process to flag known vulnerabilities in third-party libraries.
+*   **Architecture Review:** Adherence to the **Feature-Sliced Design (FSD)** pattern helps compartmentalize potential risks between UI, Domain, and Data layers, limiting the blast radius of any single exploit.
