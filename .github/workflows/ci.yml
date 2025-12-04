@@ -1,71 +1,67 @@
-name: CI
+# GitHub Actions CI Workflow for SpeechFlow Browser Extension
 
-# Trigger the workflow on push events to the main branch or pull requests targeting the main branch
+# This workflow will be triggered on pushes to the main branch and on pull requests.
+# It will run tests and build the extension for different browsers.
+
+name: CI Workflow
+
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
-  build_and_test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [20.x] # Use a stable LTS version for consistency
+        node-version: [20.x] # Using Node.js 20.x for compatibility with Vite and browser extension development
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Cache npm dependencies for faster builds
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm' # Cache npm dependencies
 
-      - name: Install dependencies
-        run: npm ci # Use 'npm ci' for cleaner, reproducible installations in CI
+    - name: Install dependencies
+      run: npm ci # Use npm ci for cleaner installs in CI environments
 
-      - name: Lint with Ruff (as per AGENTS.md for Python, adapting for JS/TS stack)
-        # Note: This assumes a JS/TS project. If it were Python, Ruff linting would be used.
-        # For JS/TS, we'll use ESLint or Biome if configured. Assuming Vite implies standard JS/TS tooling.
-        # If Biome is the primary linter as per APEX mandate, configure it here.
-        # For this example, we'll simulate a common JS linting step. Replace with actual Biome command if available.
-        run: | # Placeholder for actual JS/TS linting command. Update if Biome or ESLint is integrated.
-          echo "Skipping JS/TS linting as per APEX Python focus in AGENTS.md. Manual review needed if not covered by Vite build."
-          # Example for Biome if configured: npx @biomejs/biome lint .
-          # Example for ESLint: npx eslint .
+    - name: Lint code with Ruff (via Biome integration if applicable) and TypeScript
+      run: npm run lint # Assuming a lint script exists in package.json for unified linting
 
-      - name: Build with Vite
-        # Vite's build process inherently includes checks and transpilation.
-        run: npm run build
-        env:
-          NODE_ENV: production
+    - name: Run Unit Tests with Vitest
+      run: npm test # Assuming npm test runs Vitest
 
-      - name: Run Unit Tests with Vitest
-        # Assuming Vitest is configured for the project as per APEX mandate for Vite projects.
-        run: npm run test:unit # Standard script for running unit tests
+    # If E2E tests are part of the matrix, add them here.
+    # Example for Playwright E2E tests:
+    # - name: Install Playwright Browsers
+    #   run: npx playwright install --with-deps
+    # - name: Run End-to-End Tests with Playwright
+    #   run: npm run e2e # Assuming npm run e2e executes Playwright tests
 
-      - name: Run E2E Tests with Playwright
-        # Assuming Playwright is configured for the project as per APEX mandate.
-        run: npm run test:e2e # Standard script for running E2E tests
-        env:
-          CI: true # Set CI environment variable for Playwright
+    - name: Build browser extensions (Chrome, Firefox, Edge)
+      run: |
+        npm run build:chrome
+        npm run build:firefox
+        npm run build:edge
+      env:
+        NODE_ENV: production # Ensure production build optimizations
 
-      # - name: Upload coverage reports to Codecov
-      #   uses: codecov/codecov-action@v4
-      #   env:
-      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      #   if: github.ref == 'refs/heads/main' # Only upload coverage on main branch pushes
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: speechflow-extension-builds
+        path: |
+          dist/chrome
+          dist/firefox
+          dist/edge
+        retention-days: 7 # Keep artifacts for 7 days
 
-      # Action to upload test results for visualization (e.g., in GitHub UI)
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        if: always() # Upload artifacts regardless of job success/failure
-        with:
-          name: test-results
-          path: |
-            junit.xml # Assuming Vitest or Playwright generates JUnit XML reports
-            # Add paths to other relevant test artifacts if they exist
+    # Optional: Deploy to specific stores (e.g., Chrome Web Store, AMO) would require separate jobs and secrets management.
+    # This CI focuses on building and basic testing.
